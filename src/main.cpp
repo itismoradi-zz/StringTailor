@@ -2,9 +2,12 @@
     StringTailor
 */
 
+#include "app.hpp"
+
 int main()
 {
-    return 0;
+    App app;
+    return app.exec();
 }
 
 //Buali Sina university of Hamedan

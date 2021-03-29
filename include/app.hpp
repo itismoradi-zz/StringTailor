@@ -1,5 +1,7 @@
-#ifndef APP_HPP
-#define APP_HPP
+#ifndef APP_IG
+#define APP_IG
+
+#include "command.hpp" 
 
 class App
 {
@@ -8,8 +10,12 @@ class App
         ~App();
         int exec();
         void splashScreen();
+
+        static void switchStatus();
+        static bool getStatus();
     private:
-        bool status;
+        static bool status;
+        Command command;
 };
 
 #endif

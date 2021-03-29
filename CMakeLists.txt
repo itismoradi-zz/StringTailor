@@ -5,5 +5,6 @@ include_directories(include)
 add_executable(app 
     src/main.cpp
     src/app.cpp
+    src/command.cpp
 )
 message(STATUS ">>> app is building!!")

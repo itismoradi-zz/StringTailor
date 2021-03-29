@@ -2,19 +2,23 @@
 #include <iostream>
 using namespace std;
 
+bool App::status = true;
+
 App::App()
 {
-    status = true;
+
 }
 
 App::~App()
 {
-    cout << "program finished!" << endl;
+    cout << "=!= " << "program finished!" << endl;
 }
 
 int App::exec()
 {
     splashScreen();
+    command.getCommand();
+    return 0;
 }
 
 void App::splashScreen()
@@ -30,4 +34,22 @@ void App::splashScreen()
     cout << "|:: machine guide command ::|" << endl;
     cout << "|^^^^^^^^^ <help> ^^^^^^^^^^|" << endl;
     cout << "#===========================#" << endl;
+}
+
+void App::switchStatus()
+{
+    //switches app status to false/true
+    if(status == true)
+    {
+        status = false;
+    }
+    else
+    {
+        status = true;
+    }
+}
+
+bool App::getStatus()
+{
+    return status;
 }

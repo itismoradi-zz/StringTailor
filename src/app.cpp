@@ -6,7 +6,7 @@ bool App::status = true;
 
 App::App()
 {
-
+    splashScreen();
 }
 
 App::~App()
@@ -16,7 +16,6 @@ App::~App()
 
 int App::exec()
 {
-    splashScreen();
     command.getCommand();
     return 0;
 }

@@ -2,14 +2,23 @@
 #define COMMAND_IG
 
 #include <string>
+#include <array>
+#define MAX_COMMAND_LENGTH 24       //operand1 maximum 10 character 
+                                    //space and binary operator maximum 4 character
+                                    //operand2 maximum 10 character
 
 class Command
 {
     public:
         Command();
         void getCommand();
+        void help();
+        void separator();
     private:
-        std::string commandText;
+        std::array <char, MAX_COMMAND_LENGTH> inputedText;  
+        std::string operand1;
+        std::string operator_;
+        std::string operand2;
 };
 
 #endif

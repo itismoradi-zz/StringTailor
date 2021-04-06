@@ -16,6 +16,7 @@ class App
     private:
         static bool status;
         Command command;
+        History history;
 };
 
 #endif

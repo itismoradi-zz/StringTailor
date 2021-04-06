@@ -8,6 +8,11 @@ Command::Command()
 
 }
 
+Command::Command(History * history)
+{
+    this->history = history;
+}
+
 void Command::getCommand()
 {
     do

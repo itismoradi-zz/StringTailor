@@ -5,6 +5,7 @@ using namespace std;
 bool App::status = true;
 
 App::App()
+    :command(&history)
 {
     splashScreen();
 }

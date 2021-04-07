@@ -1,8 +1,30 @@
 #ifndef OPERATOR_IG
 #define OPERATOR_IG
-namespace
+
+namespace op
 {
-    void op_add();
+    //one character
+    template <class T, class C>
+    void plus(T, C);
+    template <class T, class C>
+    void minus(T, C);
+    template <class T, class C>
+    void star(T, C);
+    template <class T, class C>
+    void slash(T, C);
+    template <class T, class C>
+    void less(T, C);
+    //two character
+    template <class T, class C>
+    void doubleAmpersand(T, C);
+    template <class T, class C>
+    void doubleVertiSlash(T, C);
+    template <class T, class C>
+    void exclamation_equal(T, C);
+    template <class T, class C>
+    void plus_equal(T, C);
+    template <class T, class C>
+    void minus_equal(T, C);
 };
 
 #endif

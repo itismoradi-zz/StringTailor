@@ -1,12 +1,13 @@
 #include "command.hpp"
 #include "app.hpp"
 #include "operator.hpp"
+#include "operands.hpp"
 #include <iostream>
 using namespace std;
 
 Command::Command()
 {
-
+    //defualt construcor
 }
 
 Command::Command(History * history)
@@ -37,23 +38,30 @@ void Command::getCommand()
         
         if(!isComputational())   //inputed command is not a string Computational command
         {
-            if(operand1 == "exit" || cin.eof())
+            if(firstOperand == "exit" || cin.eof())
             {
                 App::switchStatus();
                 break;
             }
-            else if(operand1 == "help")
+            else if(firstOperand == "help")
             {
                 help();
             }
-            else if(operand1 == "history")
+            else if(firstOperand == "history")
             {
 
             }
         }
         else                     //inputed command has a string operator
         {
-            findClass();
+            try
+            {
+                find_firstOperand_class();
+            }
+            catch(const char * message)
+            {
+                cerr << "(!) " << message << endl;
+            }
         }
     }
     while(App::getStatus() == true);
@@ -80,15 +88,15 @@ void Command::separator(char * text)
     textSize = --index;
     index = findNoneSpaceHomeIndex(0);
 
-    //separate operand1
+    //separate firstOperand
     while(inputedText.at(index) != ' ')
     {
         char item = inputedText.at(index);
-        operand1.push_back(item);
+        firstOperand.push_back(item);
         index++;
     }
 
-    //ignore white spaces between operand1 and operator
+    //ignore white spaces between firstOperand and operator
     index = findNoneSpaceHomeIndex(index);
 
     //separate operator
@@ -104,23 +112,23 @@ void Command::separator(char * text)
         }
     }
 
-    //ignore white spaces between operator and operand2
+    //ignore white spaces between operator and secondOperand
     index = findNoneSpaceHomeIndex(index);
 
     //separate operand2
     while(inputedText.at(index) != ' ')
     {
         char item = inputedText.at(index);
-        operand2.push_back(item);
+        secondOperand.push_back(item);
         index++;
     }
 
-    if(operand1.size() > 10 || operand2.size() > 10)
+    if(firstOperand.size() > 10 || secondOperand.size() > 10)
     {
         throw "=!= operand must be maximum 10 character";
     }
 
-    cout << "! " << operand1 << " ! " << operator_ << " ! " << operand2 << endl;
+    cout << "! " << firstOperand << " ! " << operator_ << " ! " << secondOperand << endl;
 }
 
 size_t Command::findNoneSpaceHomeIndex(size_t pos) const
@@ -135,7 +143,7 @@ size_t Command::findNoneSpaceHomeIndex(size_t pos) const
 
 bool Command::isComputational() const
 {
-    if(operator_.empty() && operand2.empty())
+    if(operator_.empty() && secondOperand.empty())
     {
         return false;
     }
@@ -145,52 +153,131 @@ bool Command::isComputational() const
     }
 }
 
-void Command::findClass()
+void Command::find_firstOperand_class()
 {
-    if(operand1.size() == 1)
+    /* 
+        operand 1
+        According to the size of the firstOperand string,
+        creates a suitable object for the user input 
+        operand to finally pass to the op namespace functions 
+    */
+
+    if(firstOperand.size() == 1)
     {
-        findOperator<, >(class1, class2);    
+        Operand1 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 2)
+    else if(firstOperand.size() == 2)
     {
-        findOperator<, >(class1, class2);    
+        Operand2 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 3)
+    else if(firstOperand.size() == 3)
     {
-        findOperator<, >(class1, class2);    
+        Operand3 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 4)
+    else if(firstOperand.size() == 4)
     {
-        findOperator<, >(class1, class2);    
+        Operand4 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 5)
+    else if(firstOperand.size() == 5)
     {
-        findOperator<, >(class1, class2);    
+        Operand5 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 6)
+    else if(firstOperand.size() == 6)
     {
-        findOperator<, >(class1, class2);    
+        Operand6 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 7)
+    else if(firstOperand.size() == 7)
     {
-        findOperator<, >(class1, class2);    
+        Operand7 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 8)
+    else if(firstOperand.size() == 8)
     {
-        findOperator<, >(class1, class2);    
+        Operand8 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 9)
+    else if(firstOperand.size() == 9)
     {
-        findOperator<, >(class1, class2);    
+        Operand9 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
-    else if(operand1.size() == 10)
+    else if(firstOperand.size() == 10)
     {
-        findOperator<, >(class1, class2);    
+        Operand10 firstClass(this->firstOperand); 
+        find_secondOperand_class(firstClass);
     }
 }
 
-template <class T, class C>
-void Command::findOperator(T op1, C op2)
+template <class T>
+void Command::find_secondOperand_class(T firstClass)
+{
+    /* 
+        operand 2
+        According to the size of the secondOperand string,
+        creates a suitable object for the user input 
+        operand to finally pass to the op namespace functions 
+    */
+
+    if(secondOperand.size() == 1)
+    {
+        Operand1 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 2)
+    {
+        Operand2 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 3)
+    {
+        Operand3 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 4)
+    {
+        Operand4 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 5)
+    {
+        Operand5 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 6)
+    {
+        Operand6 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 7)
+    {
+        Operand7 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 8)
+    {
+        Operand8 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 9)
+    {
+        Operand9 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+    else if(secondOperand.size() == 10)
+    {
+        Operand10 secondClass(this->secondOperand); 
+        findOperator(firstClass, secondClass);
+    }
+}
+
+template <class X, class Y>
+void Command::findOperator(X op1, Y op2)
 {
     if(operator_ == "+")
     {

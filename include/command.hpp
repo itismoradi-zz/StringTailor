@@ -14,18 +14,19 @@ class Command
         void getCommand();
     private:
         std::array <char, MAX_COMMAND_LENGTH> inputedText;  
-        std::string operand1;
+        std::string firstOperand;
         std::string operator_;
-        std::string operand2;
+        std::string secondOperand;
         History * history;
 
         void help();
         void separator(char *);
         size_t findNoneSpaceHomeIndex(size_t) const;
         bool isComputational() const;
-        void findClass();
-        template <class T, class C>
-        void findOperator(T, C);
+
+        void find_firstOperand_class();
+        template <class T> void find_secondOperand_class(T);
+        template <class X, class Y> void findOperator(X, Y);
 };
 
 #endif

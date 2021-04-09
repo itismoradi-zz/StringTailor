@@ -12,7 +12,7 @@ App::App()
 
 App::~App()
 {
-    cout << "(!) " << "program finished!" << endl;
+    cout << "---------------(!) " << "program finished!" << endl;
 }
 
 int App::exec()

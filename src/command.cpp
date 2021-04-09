@@ -26,43 +26,44 @@ void Command::getCommand()
         try
         {
             separator(tempInputedText);
-        }
+
+            if(!isComputational())   //inputed command is not a string Computational command
+            {
+                if(firstOperand.empty())
+                {
+                    throw "your command is empty";
+                }
+                else if(firstOperand == "exit" || cin.eof())
+                {
+                    App::switchStatus();
+                    break;
+                }
+                else if(firstOperand == "help")
+                {
+                    help();
+                }
+                else if(firstOperand == "history")
+                {
+
+                }
+            }
+            else                     //inputed command has a string operator
+            {
+                    find_firstOperand_class();
+            }
+        }   
         catch(const out_of_range e)
         {
             cerr << e.what() << endl;
         }
         catch(const char * message)
         {
-            cerr << message << endl;
+            cerr << "---------------(!) " << message << endl;
         }
-        
-        if(!isComputational())   //inputed command is not a string Computational command
-        {
-            if(firstOperand == "exit" || cin.eof())
-            {
-                App::switchStatus();
-                break;
-            }
-            else if(firstOperand == "help")
-            {
-                help();
-            }
-            else if(firstOperand == "history")
-            {
-
-            }
-        }
-        else                     //inputed command has a string operator
-        {
-            try
-            {
-                find_firstOperand_class();
-            }
-            catch(const char * message)
-            {
-                cerr << "(!) " << message << endl;
-            }
-        }
+        firstOperand.clear();
+        operator_.clear();
+        secondOperand.clear();
+        inputedText.fill('\0');
     }
     while(App::getStatus() == true);
 }
@@ -83,7 +84,13 @@ void Command::separator(char * text)
         inputedText.at(index) = text[index];
         index++;
     }
+    inputedText.at(index) = '\0';   //end
     
+    if(inputedText.empty())
+    {
+        throw "empty command";
+    }
+
     //ignore white spaces in array front
     textSize = --index;
     index = findNoneSpaceHomeIndex(0);
@@ -100,14 +107,16 @@ void Command::separator(char * text)
     index = findNoneSpaceHomeIndex(index);
 
     //separate operator
-    if(char item1 = inputedText.at(index) != ' ')
+    if(inputedText.at(index) != ' ')
     {
-        operator_.push_back(item1);
+        char item = inputedText.at(index);
+        operator_.push_back(item);
         index++;
 
-        if(char item2 = inputedText.at(index) != ' ')
+        if(inputedText.at(index) != ' ')    //two character operator
         {
-            operator_.push_back(item2);
+            char item = inputedText.at(index);
+            operator_.push_back(item);
             index++;
         }
     }
@@ -116,7 +125,7 @@ void Command::separator(char * text)
     index = findNoneSpaceHomeIndex(index);
 
     //separate operand2
-    while(inputedText.at(index) != ' ')
+    while(inputedText.at(index) != '\0')
     {
         char item = inputedText.at(index);
         secondOperand.push_back(item);
@@ -125,10 +134,8 @@ void Command::separator(char * text)
 
     if(firstOperand.size() > 10 || secondOperand.size() > 10)
     {
-        throw "=!= operand must be maximum 10 character";
+        throw "operand must be maximum 10 character";
     }
-
-    cout << "! " << firstOperand << " ! " << operator_ << " ! " << secondOperand << endl;
 }
 
 size_t Command::findNoneSpaceHomeIndex(size_t pos) const
@@ -143,7 +150,7 @@ size_t Command::findNoneSpaceHomeIndex(size_t pos) const
 
 bool Command::isComputational() const
 {
-    if(operator_.empty() && secondOperand.empty())
+    if(!firstOperand.empty() && operator_.empty() && secondOperand.empty())
     {
         return false;
     }
@@ -166,52 +173,65 @@ void Command::find_firstOperand_class()
     {
         Operand1 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 2)
     {
         Operand2 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 3)
     {
         Operand3 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 4)
     {
         Operand4 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 5)
     {
         Operand5 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 6)
     {
         Operand6 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 7)
     {
         Operand7 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 8)
     {
         Operand8 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 9)
     {
         Operand9 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
     else if(firstOperand.size() == 10)
     {
         Operand10 firstClass(this->firstOperand); 
         find_secondOperand_class(firstClass);
+        return;
     }
+
+    //exception
+    throw "Improper behavior due to incorrect insertion of operands";
 }
 
 template <class T>
@@ -228,52 +248,65 @@ void Command::find_secondOperand_class(T firstClass)
     {
         Operand1 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 2)
     {
         Operand2 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 3)
     {
         Operand3 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 4)
     {
         Operand4 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 5)
     {
         Operand5 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 6)
     {
         Operand6 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 7)
     {
         Operand7 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 8)
     {
         Operand8 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 9)
     {
         Operand9 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
     else if(secondOperand.size() == 10)
     {
         Operand10 secondClass(this->secondOperand); 
         findOperator(firstClass, secondClass);
+        return;
     }
+
+    //exception
+    throw "Improper behavior due to incorrect insertion of operands";
 }
 
 template <class X, class Y>

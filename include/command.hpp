@@ -22,7 +22,7 @@ class Command
         void help();
         void separator(char *);
         size_t findNoneSpaceHomeIndex(size_t) const;
-        bool isComputational() const;
+        bool isComputational(const char *) const;
 
         void find_firstOperand_class();
         template <class T> void find_secondOperand_class(T);

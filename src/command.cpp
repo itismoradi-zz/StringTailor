@@ -20,14 +20,17 @@ void Command::getCommand()
     do
     {
         cout << "Machine Command" << ":=) ";
-        char tempInputedText[MAX_COMMAND_LENGTH];
-        cin.getline(tempInputedText, MAX_COMMAND_LENGTH);
+        char userCommand[MAX_COMMAND_LENGTH];
+        cin.getline(userCommand, MAX_COMMAND_LENGTH);
 
         try
         {
-            separator(tempInputedText);
-
-            if(!isComputational())   //inputed command is not a string Computational command
+            if(isComputational(userCommand))       //inputed command has a string operator
+            {
+                separator(userCommand);
+                find_firstOperand_class();
+            }
+            else                                   //inputed command is not a string Computational command
             {
                 if(firstOperand.empty())
                 {
@@ -47,10 +50,6 @@ void Command::getCommand()
 
                 }
             }
-            else                     //inputed command has a string operator
-            {
-                    find_firstOperand_class();
-            }
         }   
         catch(const out_of_range e)
         {
@@ -60,10 +59,10 @@ void Command::getCommand()
         {
             cerr << "---------------(!) " << message << endl;
         }
+
         firstOperand.clear();
         operator_.clear();
         secondOperand.clear();
-        inputedText.fill('\0');
     }
     while(App::getStatus() == true);
 }
@@ -148,16 +147,20 @@ size_t Command::findNoneSpaceHomeIndex(size_t pos) const
     return pos;
 }
 
-bool Command::isComputational() const
+bool Command::isComputational(const char * userCommand) const
 {
-    if(!firstOperand.empty() && operator_.empty() && secondOperand.empty())
+    size_t index = findNoneSpaceHomeIndex(0);
+
+    while(userCommand[index] != '\0')
     {
-        return false;
+        if(userCommand[index] == ' ')
+        {
+            return true;
+        }
+        index++;
     }
-    else
-    {
-        return true;
-    }
+
+    return false;
 }
 
 void Command::find_firstOperand_class()

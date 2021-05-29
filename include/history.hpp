@@ -7,6 +7,8 @@
 class History
 {
     public:
+        void insert(std::string);
+        void print() const;
     private:
         std::vector <std::string> data;
 };

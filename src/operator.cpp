@@ -145,7 +145,7 @@ string op::doubleAmpersand(T  op1, C  op2)
             ch += 32;
         }
 
-        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
+        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
         {
             for(char & ch : op2.getText())  //check operand 2
             {
@@ -155,7 +155,7 @@ string op::doubleAmpersand(T  op1, C  op2)
                     ch += 32;
                 }
 
-                if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
+                if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
                 {
                     return "True";
                 }
@@ -181,7 +181,7 @@ string op::doubleVertiSlash(T  op1, C  op2)
             ch += 32;
         }
 
-        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
+        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
         {
             return "True";
         }
@@ -199,7 +199,23 @@ string op::exclamation_equal(T  op1, C  op2)
 template <class T, class C>
 string op::plus_equal(T  op1, C  op2)
 {
+    string result;
+    string op2Text = op2.getText();
+    size_t op1Size = op1.getSize();
+    size_t op2Size = op2.getSize();
 
+    if(op2Size > 1)
+    {
+        throw "operand 2 must be one character";
+    }
+
+    for(const char & ch : op1.getText())
+    {
+       result += ch;
+       result += op2Text;
+    }
+    
+    return result;
 }
 
 template <class T, class C>

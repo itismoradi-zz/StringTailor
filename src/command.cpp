@@ -58,6 +58,10 @@ void Command::getCommand()
                 {
                     history->print();
                 }
+                else
+                {
+                    throw "undefined command";
+                }
             }
         }   
         catch(const out_of_range e)
@@ -286,44 +290,49 @@ void Command::find_secondOperand_class(T firstClass)
 template <class X, class Y>
 void Command::findOperator(X op1, Y op2)
 {
+    string result;
+
     if(operator_ == "+")
     {
-        op::plus(op1, op2);
+        result = op::plus(op1, op2);
     }
     else if(operator_ == "-")
     {
-        op::minus(op1, op2);
+        result = op::minus(op1, op2);
     }
     else if(operator_ == "*")
     {
-        op::star(op1, op2);
+        result = op::star(op1, op2);
     }
     else if(operator_ == "/")
     {
-        op::slash(op1, op2);
+        result = op::slash(op1, op2);
     }
     else if(operator_ == "<")
     {
-        op::less(op1, op2);
+        result = op::less(op1, op2);
     }
     else if(operator_ == "&&")
     {
-        op::doubleAmpersand(op1, op2);
+        result = op::doubleAmpersand(op1, op2);
     }
     else if(operator_ == "||")
     {
-        op::doubleVertiSlash(op1, op2);
+        result = op::doubleVertiSlash(op1, op2);
     }
     else if(operator_ == "!=")
     {
-        op::exclamation_equal(op1, op2);
+        result = op::exclamation_equal(op1, op2);
     }
     else if(operator_ == "+=")
     {
-        op::plus_equal(op1, op2);
+        result = op::plus_equal(op1, op2);
     }
     else if(operator_ == "-=")
     {
-        op::minus_equal(op1, op2);
+        result = op::minus_equal(op1, op2);
     }
+
+    cout << result << endl;
+    history->insert(result);
 }

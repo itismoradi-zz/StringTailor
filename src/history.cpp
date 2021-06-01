@@ -16,7 +16,7 @@ void History::insert(string result)
 
 void History::print() const
 {
-    cout << "---------------(!) Machine results:" << endl;
+    cout << "Machine results:" << endl;
 
     for(string item : data)
     {

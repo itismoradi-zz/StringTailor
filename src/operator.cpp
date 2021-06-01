@@ -66,7 +66,30 @@ string op::minus(T  op1, C  op2)
 template <class T, class C>
 string op::star(T  op1, C  op2)
 {
+    string result;
+    size_t op1Size = op1.getSize();
+    size_t op2Size = op2.getSize();
 
+    if(op1Size > op2Size)
+    {
+        for(size_t i = 0; i < op1Size; i++)
+        {
+            result += op2.getText();
+        }
+    }
+    else if(op1Size < op2Size)
+    {
+        for(size_t i = 0; i < op2Size; i++)
+        {
+            result += op1.getText();
+        }
+    }
+    else
+    {
+        throw "The lengths of the two operands should not be equal";
+    }
+
+    return result;
 }
 
 template <class T, class C>

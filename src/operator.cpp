@@ -114,7 +114,7 @@ string op::slash(T  op1, C  op2)
     {
         if(index == op2Size)
         {
-            return result;
+            break;
         }
         else if(ch + 32 == op2.getText().at(index))
         {
@@ -122,6 +122,8 @@ string op::slash(T  op1, C  op2)
             index++;
         }
     }
+
+    return result;
 }
 
 template <class T, class C>
@@ -135,7 +137,23 @@ string op::less(T  op1, C  op2)
 template <class T, class C>
 string op::doubleAmpersand(T  op1, C  op2)
 {
+    string result = op1.getText() + op2.getText();
 
+    for(char & ch : result)
+    {
+        //to lowercase
+        if(ch >= 65 && ch <= 90)
+        {
+            ch += 32;
+        }
+
+        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
+        {
+            return "True";
+        }
+    }
+    
+    return "False";
 }
 
 template <class T, class C>

@@ -13,6 +13,11 @@ std::string Operand9::getText() const
     return text;
 }
 
+size_t Operand9::getSize() const
+{
+    return text.size();
+}
+
 void Operand9::setText(std::string text)
 {
     for(char & item : text)

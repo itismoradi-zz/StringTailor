@@ -16,10 +16,12 @@ void History::insert(string result)
 
 void History::print() const
 {
-    cout << "Machine results:" << endl;
+    int numberOfStrings = (int) data.size() - 1;
 
-    for(string item : data)
+    cout << "Machine results:" << endl;
+    
+    for(int i = numberOfStrings ; i>=0; i--)
     {
-        cout << "    " << setw(30) << item << endl;
+        cout << "    " << setw(30) << left << data.at(i) << endl;
     }
 }

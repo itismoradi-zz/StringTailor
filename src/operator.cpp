@@ -137,6 +137,40 @@ string op::less(T  op1, C  op2)
 template <class T, class C>
 string op::doubleAmpersand(T  op1, C  op2)
 {
+    for(char & ch : op1.getText())  //check operand 1
+    {
+        //to lowercase
+        if(ch >= 65 && ch <= 90)
+        {
+            ch += 32;
+        }
+
+        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
+        {
+            for(char & ch : op2.getText())  //check operand 2
+            {
+                //to lowercase
+                if(ch >= 65 && ch <= 90)
+                {
+                    ch += 32;
+                }
+
+                if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
+                {
+                    return "True";
+                }
+            }
+
+            return "False";     //Avoid rotating the outer loop
+        }
+    }
+    
+    return "False";
+}
+
+template <class T, class C>
+string op::doubleVertiSlash(T  op1, C  op2)
+{
     string result = op1.getText() + op2.getText();
 
     for(char & ch : result)
@@ -154,12 +188,6 @@ string op::doubleAmpersand(T  op1, C  op2)
     }
     
     return "False";
-}
-
-template <class T, class C>
-string op::doubleVertiSlash(T  op1, C  op2)
-{
-
 }
 
 template <class T, class C>

@@ -3,11 +3,12 @@
 #include "operator.hpp"
 #include "operands.hpp"
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 Command::Command()
 {
-    //defualt construcor
+    
 }
 
 Command::Command(History * history)
@@ -20,34 +21,42 @@ void Command::getCommand()
     do
     {
         cout << "Machine Command" << ":=) ";
-        char userCommand[MAX_COMMAND_LENGTH];
-        cin.getline(userCommand, MAX_COMMAND_LENGTH);
+        cin.getline(userCommand, MAX_COMMAND_LENGTH, '\n');
 
         try
         {
-            if(isComputational(userCommand))       //inputed command has a string operator
+            separator();    //separate userCommand in three string
+
+            if(cin.eof())
             {
-                separator(userCommand);
+                App::switchStatus();
+                break;
+            }
+            else if(isEmpty())
+            {
+                throw "your command is empty";
+            }
+            else if(isComputational())      //inputed command has a string operator
+            {
                 find_firstOperand_class();
             }
-            else                                   //inputed command is not a string Computational command
+            else    //inputed command is not a string Computational command
             {
-                if(firstOperand.empty())
-                {
-                    throw "your command is empty";
-                }
-                else if(firstOperand == "exit" || cin.eof())
+                string & command = firstOperand;
+                toLowerCaseCommand(command);
+
+                if(command == "exit")
                 {
                     App::switchStatus();
                     break;
                 }
-                else if(firstOperand == "help")
+                else if(command == "help")
                 {
                     help();
                 }
-                else if(firstOperand == "history")
+                else if(command == "history")
                 {
-
+                    history->print();
                 }
             }
         }   
@@ -69,98 +78,60 @@ void Command::getCommand()
 
 void Command::help()
 {
-
+    cout << "helppppp" << endl;
 }
 
-void Command::separator(char * text)
+void Command::separator()
 {
-    size_t index = 0;   //Home index scrolled in inputedText array
-    size_t textSize;
+    char * pch;
+    pch = strtok(userCommand, " ");
 
-    //copy user inputed command to inputedText array data member
-    while(text[index] != '\0')
+    if(pch != NULL)
     {
-        inputedText.at(index) = text[index];
-        index++;
-    }
-    inputedText.at(index) = '\0';   //end
-    
-    if(inputedText.empty())
-    {
-        throw "empty command";
-    }
+        firstOperand = pch;
+        pch = strtok (NULL, " ");
 
-    //ignore white spaces in array front
-    textSize = --index;
-    index = findNoneSpaceHomeIndex(0);
-
-    //separate firstOperand
-    while(inputedText.at(index) != ' ')
-    {
-        char item = inputedText.at(index);
-        firstOperand.push_back(item);
-        index++;
-    }
-
-    //ignore white spaces between firstOperand and operator
-    index = findNoneSpaceHomeIndex(index);
-
-    //separate operator
-    if(inputedText.at(index) != ' ')
-    {
-        char item = inputedText.at(index);
-        operator_.push_back(item);
-        index++;
-
-        if(inputedText.at(index) != ' ')    //two character operator
+        if(pch != NULL)
         {
-            char item = inputedText.at(index);
-            operator_.push_back(item);
-            index++;
+            operator_ = pch;
+            pch = strtok (NULL, " ");
+
+            if(pch != NULL)
+            {
+                secondOperand = pch;
+            }
         }
     }
-
-    //ignore white spaces between operator and secondOperand
-    index = findNoneSpaceHomeIndex(index);
-
-    //separate operand2
-    while(inputedText.at(index) != '\0')
-    {
-        char item = inputedText.at(index);
-        secondOperand.push_back(item);
-        index++;
-    }
-
-    if(firstOperand.size() > 10 || secondOperand.size() > 10)
-    {
-        throw "operand must be maximum 10 character";
-    }
 }
-
-size_t Command::findNoneSpaceHomeIndex(size_t pos) const
+bool Command::isEmpty() const
 {
-    while(inputedText.at(pos) == ' ')
+    if(firstOperand.empty() && operator_.empty() && secondOperand.empty())
     {
-        pos++;
+        return true;
     }
-
-    return pos;
-}
-
-bool Command::isComputational(const char * userCommand) const
-{
-    size_t index = findNoneSpaceHomeIndex(0);
-
-    while(userCommand[index] != '\0')
-    {
-        if(userCommand[index] == ' ')
-        {
-            return true;
-        }
-        index++;
-    }
-
+    //else...
     return false;
+}
+
+bool Command::isComputational() const
+{
+    if(!firstOperand.empty() && operator_.empty() && secondOperand.empty())
+    {
+        return false;
+    }
+    //else...
+    return true;
+}
+
+void Command::toLowerCaseCommand(string & command)
+{
+    for(char & ch : command)
+    {
+        if(ch >= 65 && ch <= 90)
+        {
+            ch += 32;
+        }
+    }
 }
 
 void Command::find_firstOperand_class()

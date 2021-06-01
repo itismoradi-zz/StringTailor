@@ -95,7 +95,33 @@ string op::star(T  op1, C  op2)
 template <class T, class C>
 string op::slash(T  op1, C  op2)
 {
+    string result = op1.getText();
+    size_t op1Size = op1.getSize();
+    size_t op2Size = op2.getSize();
+    size_t index = 0;   //index of traversal in operand2 string
 
+    //validation for operand 1
+    for(const char & ch : result)
+    {
+        if(ch < 65 || ch > 90)
+        {
+            throw "all operand 1 characters must be uppercase";
+        }
+    }
+
+    //operating
+    for(char & ch : result)
+    {
+        if(index == op2Size)
+        {
+            return result;
+        }
+        else if(ch + 32 == op2.getText().at(index))
+        {
+            ch = op2.getText().at(index);
+            index++;
+        }
+    }
 }
 
 template <class T, class C>

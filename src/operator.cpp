@@ -193,7 +193,102 @@ string op::doubleVertiSlash(T  op1, C  op2)
 template <class T, class C>
 string op::exclamation_equal(T  op1, C  op2)
 {
+    string result;
+    bool foundCharacter;
+    string op1Text = op1.getText();
+    string op2Text = op2.getText();
+    size_t op1Size = op1.getSize();
+    size_t op2Size = op2.getSize();
+    size_t index = 0; //index of character
 
+    if(op2Size > 1)
+    {
+        throw "operand 2 must be one character";
+    }
+
+    //find index of character in operand 1
+    for(index = 0; index < op1Size; index++)
+    {
+        if(op1Text.at(index) == op2Text[0])
+        {
+            foundCharacter = true;
+            break;
+        }
+    }
+    if(!foundCharacter)
+    {
+        throw "operand 2 character not found in operand 1";
+    }
+
+    if((op1Size % 2) == 1 && (index == (op1Size / 2)))   //Axis is center of operand 1 string
+    {
+        size_t numberOfSwapElements = op1Size / 2;
+        
+        //swap after and before Elements
+        for(size_t i = 1; i <= numberOfSwapElements; i++)
+        {
+            char temp = op1Text.at(index + i);
+            op1Text.at(index + i) = op1Text.at(index - i);
+            op1Text.at(index - i) = temp;
+        }
+
+        return op1Text;
+    }
+    else if(index > (op1Size / 2))     //Axis is right of operand 1 string
+    {
+        size_t numberOfLeftElements = op1Size - index - 1;
+        size_t indexRight = index - numberOfLeftElements - 1;
+
+        //swap left Elements
+        for(size_t i = 1; i <= numberOfLeftElements; i++)
+        {
+            char temp = op1Text.at(index + i);
+            op1Text.at(index + i) = op1Text.at(index - i);
+            op1Text.at(index - i) = temp;
+        }
+
+        for (size_t i = indexRight + 1; i < op1Size; i++)
+        {
+            result.push_back(op1Text.at(i));
+        }
+        
+        //swap other elements
+        for (int i = indexRight; i >= 0; i--)
+        {
+            result.push_back(op1Text.at(i));
+        }
+
+        return result;
+    }
+    else if(index <= (op1Size / 2))     //Axis is left of operand 1 string
+    {
+        size_t numberOfRightElements = index;
+        size_t indexLeft = index + numberOfRightElements + 1;
+
+        //swap right Elements
+        for (size_t i = 1; i <= index; i++)
+        {
+            char temp = op1Text.at(index + i);
+            op1Text.at(index + i) = op1Text.at(index - i);
+            op1Text.at(index - i) = temp;
+        }
+
+        for (size_t i = 0; i < indexLeft; i++)
+        {
+            result.push_back(op1Text.at(i));
+        }
+
+        //swap other elements
+        string str;
+
+        for (int i = op1Size - 1; i >= indexLeft; i--)
+        {
+            
+            str.push_back(op1Text.at(i));
+        }
+
+        return (str + result);
+    }
 }
 
 template <class T, class C>

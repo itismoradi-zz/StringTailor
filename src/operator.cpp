@@ -25,7 +25,11 @@ string op::minus(T  op1, C  op2)
     size_t op2Size = op2.getSize();
     int resultSize = abs((int) op1Size - (int) op2Size);
 
-    if(op1Size > op2Size)
+    if(op1Size == op2Size)
+    {
+        return "null";
+    }
+    else if(op1Size > op2Size)
     {
         size_t i = 0;
 
@@ -54,10 +58,6 @@ string op::minus(T  op1, C  op2)
             result.push_back(ch);
             i++;
         }
-    }
-    else
-    {
-        throw "The lengths of the two operands should not be equal";
     }
 
     return result;
@@ -221,5 +221,48 @@ string op::plus_equal(T  op1, C  op2)
 template <class T, class C>
 string op::minus_equal(T  op1, C  op2)
 {
+    string result;
+    string op1Text = op1.getText();
+    string op2Text = op2.getText();
+    size_t op1Size = op1.getSize();
+    size_t op2Size = op2.getSize();
 
+    if(op1.getText() == op2.getText())
+    {
+        return "null";
+    }
+    else if(op1Size < op2Size)
+    {
+        throw "operand2 must be less than or equal to operand1";
+    }
+
+    for(size_t i = 0; i < op1Size; i++)
+    {
+        char ch = op1Text.at(i);
+        if(ch == op2Text.at(0) && i < (op1Size - op2Size + 1))     //check first same characters
+        {
+            size_t j = 1; //index of traversal in operand 2
+
+            for(size_t k = 1; k < op2Size; k++)
+            {
+                if(op1Text.at(i+j) == op2Text.at(j))
+                {
+                    j++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            if(j == op2Size)
+            {
+                i += j - 1;
+                continue;
+            }
+        }
+        result.push_back(ch);
+    }
+
+    return result;
 }

@@ -317,6 +317,8 @@ string op::exclamation_equal(T  op1, C  op2)
 
         return (str + result);
     }
+
+    return result;
 }
 
 template <class T, class C>

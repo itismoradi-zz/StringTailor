@@ -129,7 +129,35 @@ string op::slash(T  op1, C  op2)
 template <class T, class C>
 string op::less(T  op1, C  op2)
 {
+    string result;
+    string op1Text = op1.getText();
+    string op2Text = op2.getText();
+    size_t op1Size = op1.getSize();
+    size_t op2Size = op2.getSize();
 
+    if(op2Size > 1)
+    {
+        throw "operand 2 must be one character";
+    }
+    if(op1Text == op2Text)
+    {
+        return "null";
+    }
+
+    for(char & ch : op1Text)
+    {
+        if(ch < op2Text[0])
+        {
+            result.push_back(ch);
+        }
+    }
+
+    if(result.empty())
+    {
+        return "null";
+    }
+
+    return result;
 }
 
 //two character
